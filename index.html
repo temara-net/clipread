@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="id">
+<head><meta charset="utf-8"><title>Baca Clipboard</title>
+<style>body{font-family:sans-serif;margin:24px}button{font-size:20px;padding:14px 22px}pre{font-size:18px;background:#f2f2f2;padding:16px;white-space:pre-wrap;word-break:break-all;min-height:40px}textarea{width:95%;height:90px;font-size:16px}</style></head>
+<body>
+<h2>Baca isi clipboard</h2>
+<p>Klik tombol di bawah. Isi clipboard akan tampil di kotak abu-abu. Halaman ini tidak mengirim apa pun ke mana pun.</p>
+<button id="btn">BACA CLIPBOARD</button>
+<pre id="out">(belum dibaca)</pre>
+<p id="err" style="color:#b00"></p>
+<textarea id="ta" placeholder="Kotak tempel cadangan"></textarea>
+<script>
+var out=document.getElementById('out'),err=document.getElementById('err');
+document.getElementById('btn').addEventListener('click',function(){
+  if(!navigator.clipboard||!navigator.clipboard.readText){err.textContent='Clipboard API tidak tersedia di konteks ini.';return;}
+  navigator.clipboard.readText().then(function(t){out.textContent=t;err.textContent='';}).catch(function(e){err.textContent='Gagal membaca clipboard: '+e.name+' — '+e.message;});
+});
+document.addEventListener('paste',function(e){var t=(e.clipboardData||window.clipboardData).getData('text');if(t){out.textContent=t;}});
+document.getElementById('ta').addEventListener('input',function(e){if(e.target.value){out.textContent=e.target.value;}});
+</script>
+</body>
+</html>
